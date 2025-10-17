@@ -1,7 +1,17 @@
 # 🧩 Prueba Técnica DSP — Gestión de Recibos
 
-Este proyecto consiste en un **microservicio backend** en NestJS para la gestión de recibos de pago, y un **frontend** en React/Angular para visualizar y actualizar recibos.
+Este proyecto consiste en un **microservicio backend** en NestJS para la gestión de recibos de pago, y un **frontend** en Angular para visualizar y actualizar recibos.
 
+Usuario hardcodeado para iniciar sesión en la app:
+
+user:
+```bash
+admin
+``` 
+password: 
+```bash
+12345
+```
 ---
 
 ## 📦 Estructura del proyecto
@@ -22,9 +32,55 @@ Este proyecto consiste en un **microservicio backend** en NestJS para la gestió
 └── README.md
 
 /frontend
-├── src/
+├── src/app/
+│   ├── interceptors/
+│   │   └── auth.interceptor.ts
+│   ├── auth/
+│   │   └── auth.service.ts
+│   ├── recibos/
+│   │   ├── services/
+│   │   │   └── recibos.service.ts
+│   │   ├── recibos.component.ts
+│   │   ├── recibos.component.html
+│   │   └── recibos.component.css
 ├── package.json
 └── README.md
+```
+
+---
+
+## ⚙️ Instalación y ejecución
+
+1. Instalar dependencias para backend y frontend:
+
+```bash
+npm install
+```
+
+2. Variables de entorno necesarias:
+
+```env
+MONGODB_URI=mongodb://localhost:27017/recibos
+JWT_SECRET=mi_clave_secreta
+PORT=3000
+```
+
+3. Levantar el backend:
+
+```bash
+nx serve backend
+```
+
+4. Levantar el frontend:
+
+```bash
+nx serve frontend
+```
+
+5. Swagger UI disponible en el backend:
+
+```
+http://localhost:3000/api/docs
 ```
 
 ---
@@ -41,55 +97,32 @@ Microservicio para gestionar recibos de pago. Incluye:
 * Validaciones con `class-validator`
 * Manejo centralizado de errores con filtro global
 * Documentación de API con Swagger (`/api/docs`)
-
-### 🔹 Instalación
-
-1. Instalar dependencias:
-
-```bash
-cd backend
-npm install
-```
-
-2. Variables de entorno necesarias:
-
-```env
-MONGODB_URI=mongodb://localhost:27017/recibos
-JWT_SECRET=mi_clave_secreta
-PORT=3000
-```
-
-> Si deseas usar RabbitMQ (opcional):
->
-> ```env
-> AMQP_URL=amqp://localhost
-> ```
-
-3. Levantar el servidor:
-
-```bash
-npm run start:dev
-```
-
-4. Swagger UI disponible en:
-
-```
-http://localhost:3000/api/docs
-```
+* Login
 
 ### 🔹 Endpoints principales
 
 | Método | Ruta                | Descripción                      |
 | ------ | ------------------- | -------------------------------- |
 | POST   | /recibos            | Crear un nuevo recibo            |
-| GET    | /recibos            | Listar recibos (opcional filtro) |
+| GET    | /recibos            | Listar recibos |
 | PATCH  | /recibos/:id/cobrar | Marcar un recibo como cobrado    |
 
 > Todos los endpoints están protegidos con JWT (`@UseGuards(JwtAuthGuard)`).
 
+### 🔹 Ejemplo de JSON de recibo
+
+```json
+{
+  "cliente": "Juan Pérez",
+  "monto": 1500,
+  "fechaVencimiento": "2025-12-31T00:00:00.000Z",
+  "estado": "pendiente"
+}
+```
+
 ---
 
-## ⚙️ Frontend (React/Angular)
+## ⚙️ Frontend (Angular)
 
 ### 🔹 Descripción
 
@@ -102,15 +135,14 @@ Aplicación para visualizar y actualizar recibos:
   * Estado (badge o color)
   * Fecha de vencimiento
   * Botón “Cobrar” (solo si pendiente)
+
 * Filtro visual por estado
+
 * Llamadas a la API backend para crear, listar y cobrar recibos
 
-### 🔹 Instalación
+* UI basada en Bootstrap
 
-```bash
-npm install
-nx serve backend
-```
+---
 
 ## 💻 Tecnologías usadas
 
@@ -118,3 +150,5 @@ nx serve backend
 * Frontend: **Angular**
 * Base de datos: **MongoDB**
 * Autenticación: **JWT**
+
+---
