@@ -1,0 +1,73 @@
+<div class="container mt-4">
+    <h2 class="mb-3 text-center">📄 Gestión de Recibos</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <div>
+        <label for="filtro" class="me-2 fw-bold">Filtrar por estado:</label>
+        <select
+          id="filtro"
+          class="form-select d-inline-block w-auto"
+          [(ngModel)]="filtroEstado"
+        >
+          <option value="todos">Todos</option>
+          <option value="pendiente">Pendiente</option>
+          <option value="cobrado">Cobrado</option>
+          <option value="rechazado">Rechazado</option>
+        </select>
+      </div>
+  
+      <button class="btn btn-outline-primary" (click)="cargarRecibos()">
+        🔄 Actualizar
+      </button>
+    </div>
+  
+    <div *ngIf="cargando" class="text-center mt-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2">Cargando recibos...</p>
+    </div>
+  
+    <table *ngIf="!cargando" class="table table-hover table-striped">
+      <thead class="table-primary">
+        <tr>
+          <th>Cliente</th>
+          <th>Monto (€)</th>
+          <th>Estado</th>
+          <th>Fecha de vencimiento</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let recibo of filtrarRecibos()">
+          <td>{{ recibo.cliente }}</td>
+          <td>{{ recibo.monto | number:'1.2-2' }}</td>
+          <td>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-warning text-dark': recibo.estado === 'pendiente',
+                'bg-success': recibo.estado === 'cobrado',
+                'bg-danger': recibo.estado === 'rechazado'
+              }"
+            >
+              {{ recibo.estado | titlecase }}
+            </span>
+          </td>
+          <td>
+            {{ recibo.fechaVencimiento | date: 'dd/MM/yyyy' }}
+          </td>
+          <td>
+            <button
+              *ngIf="recibo.estado === 'pendiente'"
+              class="btn btn-sm btn-success"
+              (click)="cobrar(recibo)"
+            >
+              Cobrar 💰
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="!cargando && recibos.length === 0" class="alert alert-info">
+      No hay recibos disponibles.
+    </div>
+  </div>
+  

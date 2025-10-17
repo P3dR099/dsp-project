@@ -1,0 +1,16 @@
+<div class="container mt-4">
+  <ng-container *ngIf="isLoggedIn; else loginForm">
+    <h4 class="mb-3">Gestión de Recibos</h4>
+    <app-recibos></app-recibos>
+
+    <button class="btn btn-secondary mt-4" (click)="logout()">
+      Cerrar sesión
+    </button>
+  </ng-container>
+
+  <ng-template #loginForm>
+    <app-login></app-login>
+  </ng-template>
+</div>
+
+<router-outlet></router-outlet>
