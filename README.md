@@ -1,4 +1,4 @@
-# 🧩 Prueba Técnica DSP — Gestión de Recibos
+# 🧩 DSP — Gestión de Recibos
 
 Este proyecto consiste en un **microservicio backend** en NestJS para la gestión de recibos de pago, y un **frontend** en Angular para visualizar y actualizar recibos.
 
